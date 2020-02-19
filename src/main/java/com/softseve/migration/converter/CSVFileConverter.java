@@ -20,12 +20,17 @@ public class CSVFileConverter implements Converter {
     @Override
     public List<Patient> convert(Path path) {
         Map<String, String> mapping = new HashMap<>();
-        mapping.put("nameFromCSV1", "nameFromClass1");
-        mapping.put("nameFromCSV2", "nameFromClass2");
-        mapping.put("nameFromCSV3", "nameFromClass3");
-        mapping.put("nameFromCSV4", "nameFromClass4");
-        mapping.put("nameFromCSV5", "nameFromClass5");
-        mapping.put("nameFromCSV6", "nameFromClass6");
+        mapping.put("ID", "id");
+        mapping.put("B_DATE", "bDate");
+        mapping.put("REF_ID", "refId");
+        mapping.put("ACCESS_DATE", "accessDate");
+        mapping.put("ITEMS", "items");
+        mapping.put("MPI", "MPI");
+        mapping.put("PATIENT_TYPE_ID", "patientTypeId");
+        mapping.put("PATIENT_TYPE_TXT", "patientTypeTxt");
+        mapping.put("PATIENT_TYPE_REF", "patientTypeRef");
+        mapping.put("C_DATETIME", "cDateTime");
+        mapping.put("U_DATETIME", "uDateTime");
 
         HeaderColumnNameTranslateMappingStrategy<Patient> strategy =
             new HeaderColumnNameTranslateMappingStrategy<>();
@@ -41,7 +46,6 @@ public class CSVFileConverter implements Converter {
             e.printStackTrace();
         }
 
-//        CsvToBean csvToBean = new CsvToBean();
         csvToBean.setCsvReader(csvReader);
         csvToBean.setMappingStrategy(strategy);
 
