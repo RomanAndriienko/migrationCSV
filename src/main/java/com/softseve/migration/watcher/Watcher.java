@@ -26,16 +26,18 @@ public class Watcher {
     }
 
 
-    public Path watch(String path) throws InterruptedException,
+    public Path watch(String path, String fileType) throws InterruptedException,
         IOException {
         initDirectoryWatcher(path);
         while (true) {
             while ((key = watchService.take()) != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
-                    Path pathToFile = Paths.get(directoryPath.getParent().toString(),
-                        directoryPath.getFileName().toString(),
-                        event.context().toString());
-                    reader.read(pathToFile);
+                    if (event.context().toString().endsWith(fileType)) {
+                        Path pathToFile = Paths.get(directoryPath.getParent().toString(),
+                            directoryPath.getFileName().toString(),
+                            event.context().toString());
+                        reader.read(pathToFile);
+                    }
                 }
                 key.reset();
             }
