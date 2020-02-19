@@ -26,7 +26,8 @@ public class Watcher {
     }
 
 
-    public Path watch(String path, String fileType) throws InterruptedException,
+    //better to use Enum fileType
+    public void watch(String path, String fileType) throws InterruptedException,
         IOException {
         initDirectoryWatcher(path);
         while (true) {
