@@ -25,6 +25,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+//    compile group: 'org.flywaydb', name: 'flyway-core', version: '5.0.3'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.hsqldb:hsqldb'
