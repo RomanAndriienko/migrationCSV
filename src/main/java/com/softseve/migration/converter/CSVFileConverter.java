@@ -10,12 +10,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+@Service
 public class CSVFileConverter implements Converter {
-
-    private final CsvToBean<Patient> csvToBean;
 
     @Override
     public List<Patient> convert(Path path) {
@@ -43,8 +41,11 @@ public class CSVFileConverter implements Converter {
         try {
             csvReader = new CSVReader(new FileReader(String.valueOf(path)));
         } catch (FileNotFoundException e) {
+            //logger
             e.printStackTrace();
         }
+
+        CsvToBean<Patient> csvToBean = new CsvToBean<>();
 
         csvToBean.setCsvReader(csvReader);
         csvToBean.setMappingStrategy(strategy);

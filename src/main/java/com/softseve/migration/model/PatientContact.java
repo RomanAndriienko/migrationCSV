@@ -20,7 +20,7 @@ public class PatientContact {
     private String contactTypeId;
     private String contactType;
     private UUID contactTypeIdx;
-    private int sum;
+    private int sums;
     private String cDateTime;
     private String uDateTime;
 }
