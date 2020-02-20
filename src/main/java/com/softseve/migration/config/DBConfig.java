@@ -13,11 +13,12 @@ public class DBConfig {
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder
-            .setName("patient")
             .setType(EmbeddedDatabaseType.HSQL)
+            .setName("patient")
             .addScript("db/sql/create_patient.sql")
             .addScript("db/sql/create_contacts.sql")
             .addScript("db/sql/create_source.sql")
+            .addScript("db/sql/insert_source.sql")
             .build();
     }
 }
