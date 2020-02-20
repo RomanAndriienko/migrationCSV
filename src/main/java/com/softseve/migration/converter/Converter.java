@@ -1,10 +1,16 @@
 package com.softseve.migration.converter;
 
 import com.softseve.migration.model.Patient;
-import java.nio.file.Path;
+import com.softseve.migration.model.PatientContact;
+import com.softseve.migration.model.PatientResult;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
-public interface Converter {
+@Service
+public class Converter {
 
-    List<Patient> convert(Path path);
+    public List<PatientResult> convert(List<Patient> patients,
+        List<PatientContact> patientContacts) {
+        return null;
+    }
 }
