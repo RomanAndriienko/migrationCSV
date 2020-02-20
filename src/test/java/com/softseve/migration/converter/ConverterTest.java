@@ -7,6 +7,7 @@ import com.softseve.migration.model.Source;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,7 +69,38 @@ public class ConverterTest {
 
         List<PatientResult> results = converter.convert(patients, contacts);
 
-        System.out.println(results);
 
+        PatientResult patientResult = PatientResult.builder()
+            .accessDate(patient.getAccessDate())
+            .bDate(patient.getBDate())
+            .cContactDateTime(patientContact.getCContactDateTime())
+            .cDate(patientContact.getCDate())
+            .cntRef(patientContact.getCntRef())
+            .cntRef2(patientContact.getCntRef2())
+            .contactRef(patientContact.getContactRef())
+            .contactType(patientContact.getContactType())
+            .contactTypeId(patientContact.getContactTypeId())
+            .contactTypeIdx(patientContact.getContactTypeIdx())
+            .cPatientDateTime(patient.getCPatientDateTime())
+            .facility(patientContact.getFacility())
+            .firstName(patientContact.getFirstName())
+            .lastName(patientContact.getLastName())
+            .id(patient.getId())
+            .items(patient.getItems())
+            .MPI(patient.getMPI())
+            .patientTypeId(patient.getPatientTypeId())
+            .patientTypeRef(patient.getPatientTypeRef())
+            .patientTypeTxt(patient.getPatientTypeTxt())
+            .pCode(patientContact.getPCode())
+            .refId(patient.getRefId())
+            .sums(patientContact.getSums())
+            .uContactDateTime(patientContact.getUContactDateTime())
+            .uPatientDateTime(patient.getUPatientDateTime())
+            .user(patientContact.getUser())
+            .contactSrc(patientContact.getContactSrc())
+            .patientSrc(patient.getPatientSrc())
+            .build();
+
+        Assertions.assertEquals(results.get(0), patientResult );
     }
 }
