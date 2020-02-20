@@ -16,13 +16,13 @@ public class PatientResult {
     private String firstName;
     private String lastName;
     private String user;
-    private int facility;
-    private int cntRef;
-    private int cntRef2;
+    private long facility;
+    private long cntRef;
+    private long cntRef2;
     private String contactTypeId;
     private String contactType;
     private UUID contactTypeIdx;
-    private int sums;
+    private long sums;
     private String cContactDateTime;
     private String uContactDateTime;
     private Source contactSrc;
@@ -30,8 +30,8 @@ public class PatientResult {
     private String bDate;
     private String refId;
     private String accessDate;
-    private int items;
-    private int MPI;
+    private long items;
+    private long MPI;
     private String patientTypeId;
     private String patientTypeTxt;
     private UUID patientTypeRef;

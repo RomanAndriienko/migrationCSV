@@ -60,8 +60,8 @@ public class CSVFileReader implements Reader {
                                         .get("PATIENT_TYPE_REF"),
                                     csvRecord.getRecordNumber(),
                                     "PATIENT_TYPE_REF")))
-                        .cDateTime(csvRecord.get("C_DATETIME"))
-                        .uDateTime(csvRecord.get("U_DATETIME"))
+                        .cPatientDateTime(csvRecord.get("C_DATETIME"))
+                        .uPatientDateTime(csvRecord.get("U_DATETIME"))
                         .patientSrc(new Source(patientsPath
                             .getFileName().toString(),
                             csvRecord.getRecordNumber()))
@@ -123,8 +123,8 @@ public class CSVFileReader implements Reader {
                             .isValidLong(csvRecord.get("SUM"),
                                 csvRecord.getRecordNumber(),
                                 "SUM")))
-                        .cDateTime(csvRecord.get("C_DATE_TIME"))
-                        .uDateTime(csvRecord.get("U_DATE_TIME"))
+                        .cContactDateTime(csvRecord.get("C_DATE_TIME"))
+                        .uContactDateTime(csvRecord.get("U_DATE_TIME"))
                         .build();
                     contacts.add(contact);
                 } catch (RuntimeException e) {

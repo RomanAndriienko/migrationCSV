@@ -13,7 +13,6 @@ public class Source {
     private LocalDateTime fileDateTime;
     private long lineNumber;
     private UUID clientId;
-    private long clientId;
 
     public Source(String fileName, long lineNumber) {
         this.fileName = fileName;
