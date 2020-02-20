@@ -125,6 +125,9 @@ public class CSVFileReader implements Reader {
                                 "SUM")))
                         .cContactDateTime(csvRecord.get("C_DATE_TIME"))
                         .uContactDateTime(csvRecord.get("U_DATE_TIME"))
+                        .contactSrc(new Source(contactsPath
+                            .getFileName().toString(),
+                            csvRecord.getRecordNumber()))
                         .build();
                     contacts.add(contact);
                 } catch (RuntimeException e) {
