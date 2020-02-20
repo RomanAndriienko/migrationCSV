@@ -1,9 +1,11 @@
 package com.softseve.migration.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
+@Builder
 @Data
 public class Patient {
 
@@ -16,6 +18,7 @@ public class Patient {
     private String patientTypeId;
     private String patientTypeTxt;
     private UUID patientTypeRef;
-    private String cDateTime;
-    private String uDateTime;
+    private String cPatientDateTime;
+    private String uPatientDateTime;
+    private Source patientSrc;
 }
