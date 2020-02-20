@@ -6,10 +6,14 @@ import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Converter {
+
+    private final static Logger logger = LoggerFactory.getLogger(Converter.class);
 
     public List<PatientResult> convert(List<Patient> patients,
         List<PatientContact> patientContacts) {
@@ -22,6 +26,8 @@ public class Converter {
                     results.add(_convert(patient, contact));
                 } else {
                     //TODO
+                    logger.error(String.format("no matches by %s in line %s ", patient.getId(),
+                        patient.getPatientSrc().getLineNumber()));
                     errors.add(new FailMessage(patient.getPatientSrc().getLineNumber(), "msg"));
                 }
             }

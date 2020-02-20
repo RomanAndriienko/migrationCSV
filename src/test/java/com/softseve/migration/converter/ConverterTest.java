@@ -42,7 +42,6 @@ public class ConverterTest {
             .build();
 
         patientContact = PatientContact.builder()
-            .id(uuid)
             .cContactDateTime("String")
             .cDate("String")
             .cntRef(1)
