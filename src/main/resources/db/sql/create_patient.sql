@@ -1,4 +1,4 @@
-create table patient(
+create table patients(
  ID UUID NOT NULL ,
  B_DATE VARCHAR(255) NOT NULL,
  REF_ID VARCHAR(255) NOT NULL,
