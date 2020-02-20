@@ -15,10 +15,8 @@ public class DBConfig {
         return builder
             .setType(EmbeddedDatabaseType.HSQL)
             .setName("patient")
-            .addScript("db/sql/create_patient.sql")
-            .addScript("db/sql/create_contacts.sql")
+            .addScript("db/sql/create_patient_result.sql")
             .addScript("db/sql/create_source.sql")
-            .addScript("db/sql/insert_source.sql")
             .build();
     }
 }
