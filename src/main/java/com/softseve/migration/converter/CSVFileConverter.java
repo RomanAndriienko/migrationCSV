@@ -13,9 +13,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CSVFileConverter implements Converter {
+public class CSVFileConverter {
 
-    @Override
     public List<Patient> convert(Path path) {
         Map<String, String> mapping = new HashMap<>();
         mapping.put("ID", "id");
