@@ -13,10 +13,9 @@ public class DBConfig {
     public DataSource dataSource() {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         return builder
-            .setName("patient")
             .setType(EmbeddedDatabaseType.HSQL)
-            .addScript("db/sql/create_patient.sql")
-            .addScript("db/sql/create_contacts.sql")
+            .setName("patient")
+            .addScript("db/sql/create_patient_result.sql")
             .addScript("db/sql/create_source.sql")
             .build();
     }

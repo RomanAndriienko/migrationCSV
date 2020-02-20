@@ -1,6 +1,6 @@
 package com.softseve.migration.model;
 
-import lombok.Builder;
+import java.util.UUID;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,6 +12,7 @@ public class Source {
     private String fileName;
     private LocalDateTime fileDateTime;
     private long lineNumber;
+    private UUID clientId;
     private long clientId;
 
     public Source(String fileName, long lineNumber) {

@@ -23,7 +23,7 @@ public class PatientContact {
     private String contactType;
     private UUID contactTypeIdx;
     private long sums;
-    private String cDateTime;
-    private String uDateTime;
+    private String cContactDateTime;
+    private String uContactDateTime;
     private Source contactSrc;
 }
