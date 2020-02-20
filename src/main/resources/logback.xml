@@ -5,7 +5,7 @@
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>errors/log.err</file>
     <encoder>
-      <Pattern>%d{dd MMM yyyy;HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n</Pattern>
+      <Pattern>%d{dd MMM yyyy:HH:mm:ss.SSS} [%thread] %-5level - %msg%n</Pattern>
     </encoder>
   </appender>
 
