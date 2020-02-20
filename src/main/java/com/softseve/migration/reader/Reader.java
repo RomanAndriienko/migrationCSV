@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface Reader {
 
-    List<String> read(Path path);
+    List<String> read(List<Path> path);
 
 }
