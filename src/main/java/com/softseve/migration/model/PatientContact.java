@@ -16,13 +16,13 @@ public class PatientContact {
     private String firstName;
     private String lastName;
     private String user;
-    private int facility;
-    private int cntRef;
-    private int cntRef2;
+    private long facility;
+    private long cntRef;
+    private long cntRef2;
     private String contactTypeId;
     private String contactType;
     private UUID contactTypeIdx;
-    private int sums;
+    private long sums;
     private String cDateTime;
     private String uDateTime;
     private Source contactSrc;

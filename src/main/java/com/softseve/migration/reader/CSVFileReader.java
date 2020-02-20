@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class CSVFileReader implements Reader {
 
 
-    CSVParser CSVparser;
     Validator validator = new Validator();
 
     @Override
@@ -33,7 +32,7 @@ public class CSVFileReader implements Reader {
                 .withAllowDuplicateHeaderNames()
                 .withAllowMissingColumnNames()
                 .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase());
+                .withIgnoreHeaderCase())
         ) {
             for (CSVRecord csvRecord : csvParser) {
                 try {
@@ -45,12 +44,12 @@ public class CSVFileReader implements Reader {
                         .bDate(csvRecord.get("B_DATE"))
                         .refId(csvRecord.get("REF_ID"))
                         .accessDate(csvRecord.get("ACCESS_DATE"))
-                        .items(Integer.parseInt(validator
-                            .isValidInt(csvRecord.get("ITEMS"),
+                        .items(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("ITEMS"),
                                 csvRecord.getRecordNumber(),
                                 "ITEMS")))
-                        .MPI(Integer.parseInt(validator
-                            .isValidInt(csvRecord.get("MPI"),
+                        .MPI(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("MPI"),
                                 csvRecord.getRecordNumber(),
                                 "MPI")))
                         .patientTypeId(csvRecord.get("PATIENT_TYPE_ID"))
@@ -78,20 +77,62 @@ public class CSVFileReader implements Reader {
 
     @Override
     public List<PatientContact> readPatientsContacts(List<Path> paths) throws IOException {
+        List<PatientContact> contacts = new ArrayList<>();
+        Path contactsPath = getContactsPath(paths);
         try (
             java.io.Reader reader =
-                Files.newBufferedReader(getContactsPath(paths));
+                Files.newBufferedReader(contactsPath);
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
                 .withAllowDuplicateHeaderNames()
                 .withAllowMissingColumnNames()
                 .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase());
+                .withIgnoreHeaderCase())
         ) {
             for (CSVRecord csvRecord : csvParser) {
-                System.out.println(csvRecord.toString());
+                try {
+                    PatientContact contact = PatientContact.builder().
+                        id(UUID.fromString(validator
+                            .isValidUUID(csvRecord.get("ID"),
+                                csvRecord.getRecordNumber(),
+                                "ID")))
+                        .cDate(csvRecord.get("C_DATE"))
+                        .contactRef(csvRecord.get("CONTACT_REF"))
+                        .pCode(csvRecord.get("P_CODE"))
+                        .firstName(csvRecord.get("FIRST_NAME"))
+                        .lastName(csvRecord.get("LAST_NAME"))
+                        .user(csvRecord.get("USER"))
+                        .facility(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("FACILITY"),
+                                csvRecord.getRecordNumber(),
+                                "FACILITY")))
+                        .cntRef(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("CNT_REF"),
+                                csvRecord.getRecordNumber(),
+                                "CNT_REF")))
+                        .cntRef2(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("CNT_REF_2"),
+                                csvRecord.getRecordNumber(),
+                                "CNT_REF_2")))
+                        .contactTypeId(csvRecord.get("CONTACT_TYPE_ID"))
+                        .contactType(csvRecord.get("CONTACT_TYPE"))
+                        .contactTypeIdx(UUID.fromString(validator
+                            .isValidUUID(csvRecord.get("CONTACT_TYPE_IDX"),
+                                csvRecord.getRecordNumber(),
+                                "CONTACT_TYPE_IDX")))
+                        .sums(Long.parseLong(validator
+                            .isValidLong(csvRecord.get("SUM"),
+                                csvRecord.getRecordNumber(),
+                                "SUM")))
+                        .cDateTime(csvRecord.get("C_DATE_TIME"))
+                        .uDateTime(csvRecord.get("U_DATE_TIME"))
+                        .build();
+                    contacts.add(contact);
+                } catch (RuntimeException e) {
+                    continue;
+                }
             }
         }
-        return null;
+        return contacts;
     }
 
 

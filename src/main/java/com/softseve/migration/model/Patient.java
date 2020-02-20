@@ -13,8 +13,8 @@ public class Patient {
     private String bDate;
     private String refId;
     private String accessDate;
-    private int items;
-    private int MPI;
+    private long items;
+    private long MPI;
     private String patientTypeId;
     private String patientTypeTxt;
     private UUID patientTypeRef;

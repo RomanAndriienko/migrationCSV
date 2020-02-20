@@ -9,17 +9,17 @@ public class Validator {
         try {
             UUID.fromString(uuid);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid " + columnName);
+            throw new RuntimeException("Invalid " + uuid + " " + columnName);
         }
         return uuid;
     }
 
-    public String isValidInt(String number, long line, String columnName) {
+    public String isValidLong(String number, long line, String columnName) {
 
         try {
-            Integer.parseInt(number);
+            Long.parseLong(number);
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid " + columnName);
+            throw new RuntimeException("Invalid " + number + " " + columnName);
         }
         return number;
     }
