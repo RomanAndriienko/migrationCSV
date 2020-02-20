@@ -1,10 +1,12 @@
 package com.softseve.migration.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
+@Builder
 public class PatientContact {
 
     private UUID id;
@@ -23,4 +25,5 @@ public class PatientContact {
     private int sums;
     private String cDateTime;
     private String uDateTime;
+    private Source contactSrc;
 }

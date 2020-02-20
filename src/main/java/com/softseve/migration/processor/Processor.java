@@ -6,6 +6,7 @@ import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import com.softseve.migration.reader.Reader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Processor {
     }
 
 
-    public void process(List<Path> paths) {
+    public void process(List<Path> paths) throws IOException {
 
         patients = reader.readPatients(paths);
         patientContacts = reader.readPatientsContacts(paths);

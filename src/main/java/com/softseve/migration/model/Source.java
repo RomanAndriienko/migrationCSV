@@ -1,5 +1,6 @@
 package com.softseve.migration.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -12,4 +13,9 @@ public class Source {
     private LocalDateTime fileDateTime;
     private long lineNumber;
     private long clientId;
+
+    public Source(String fileName, long lineNumber) {
+        this.fileName = fileName;
+        this.lineNumber = lineNumber;
+    }
 }

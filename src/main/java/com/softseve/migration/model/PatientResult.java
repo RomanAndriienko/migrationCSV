@@ -23,6 +23,7 @@ public class PatientResult {
     private int sums;
     private String cContactDateTime;
     private String uContactDateTime;
+    private Source contactSrc;
 
     private String bDate;
     private String refId;
@@ -34,4 +35,5 @@ public class PatientResult {
     private UUID patientTypeRef;
     private String cPatientDateTime;
     private String uPatientDateTime;
+    private Source patientSrc;
 }
