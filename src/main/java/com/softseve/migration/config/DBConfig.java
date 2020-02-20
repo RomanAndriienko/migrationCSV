@@ -18,7 +18,7 @@ public class DBConfig {
             .addScript("db/sql/create_patient.sql")
             .addScript("db/sql/create_contacts.sql")
             .addScript("db/sql/create_source.sql")
-            .addScript("db/sql/patient.sql")
+            .addScript("db/sql/insert_source.sql")
             .build();
     }
 }
