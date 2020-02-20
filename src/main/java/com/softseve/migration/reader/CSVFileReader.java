@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class CSVFileReader implements Reader {
 
     @Override
-    public List<String> read(Path path) {
+    public List<String> read(List<Path> paths) {
         return null;
     }
 }

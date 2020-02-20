@@ -1,14 +1,17 @@
 package com.softseve.migration.watcher;
 
-import com.softseve.migration.reader.Reader;
+import com.softseve.migration.processor.Processor;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 
@@ -18,29 +21,33 @@ public class Watcher {
     private Path directoryPath;
     private WatchService watchService;
     private WatchKey key;
-    private final Reader reader;
+    private final Processor processor;
+    List<Path> paths;
 
-    public Watcher(Reader reader) throws IOException {
+    public Watcher(Processor processor) throws IOException {
         this.watchService = FileSystems.getDefault().newWatchService();
-        this.reader = reader;
+        this.processor = processor;
+        this.paths = new ArrayList<>();
     }
 
 
-    //better to use Enum fileType
-    public void watch(String path, String fileType) throws InterruptedException,
+    public void watch(String path, FileType fileType) throws InterruptedException,
         IOException {
         initDirectoryWatcher(path);
         while (true) {
             while ((key = watchService.take()) != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
-                    if (event.context().toString().endsWith(fileType)) {
-                        Path pathToFile = Paths.get(directoryPath.getParent().toString(),
+                    if (event.context().toString()
+                        .endsWith(fileType.getFileType())) {
+                        paths.add(Paths.get(directoryPath.getParent().toString(),
                             directoryPath.getFileName().toString(),
-                            event.context().toString());
-                        reader.read(pathToFile);
+                            event.context().toString()));
                     }
                 }
                 key.reset();
+                if (Files.list(directoryPath).count() == 2) {
+                    processor.process(paths);
+                }
             }
         }
     }
