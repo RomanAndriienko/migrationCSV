@@ -54,12 +54,13 @@ public class CSVFileReader implements Reader {
                                 "MPI")))
                         .patientTypeId(csvRecord.get("PATIENT_TYPE_ID"))
                         .patientTypeTxt(csvRecord.get("PATIENT_TYPE_TXT"))
-                        .patientTypeRef(
-                            UUID.fromString(validator
-                                .isValidUUID(csvRecord
-                                        .get("PATIENT_TYPE_REF"),
-                                    csvRecord.getRecordNumber(),
-                                    "PATIENT_TYPE_REF")))
+                            .patientTypeRef(csvRecord.get("PATIENT_TYPE_REF"))
+//                            .patientTypeRef(
+//                            UUID.fromString(validator
+//                                .isValidUUID(csvRecord
+//                                        .get("PATIENT_TYPE_REF"),
+//                                    csvRecord.getRecordNumber(),
+//                                    "PATIENT_TYPE_REF")))
                         .cPatientDateTime(csvRecord.get("C_DATETIME"))
                         .uPatientDateTime(csvRecord.get("U_DATETIME"))
                         .patientSrc(new Source(patientsPath

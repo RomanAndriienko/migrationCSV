@@ -17,7 +17,7 @@ public class Patient {
     private long MPI;
     private String patientTypeId;
     private String patientTypeTxt;
-    private UUID patientTypeRef;
+    private String patientTypeRef; //
     private String cPatientDateTime;
     private String uPatientDateTime;
     private Source patientSrc;

@@ -50,7 +50,7 @@ public class Loader {
                 ps.setLong(6, data.get(i).getMPI());
                 ps.setString(7, data.get(i).getPatientTypeId());
                 ps.setString(8, data.get(i).getPatientTypeTxt());
-                ps.setString(9, String.valueOf(data.get(i).getPatientTypeRef()));
+                ps.setString(9, data.get(i).getPatientTypeRef());
                 ps.setString(10, data.get(i).getCPatientDateTime());
                 ps.setString(11, data.get(i).getUPatientDateTime());
                 ps.setString(12, data.get(i).getCDate());
@@ -68,6 +68,7 @@ public class Loader {
                 ps.setLong(24, data.get(i).getSums());
                 ps.setString(25, data.get(i).getCContactDateTime());
                 ps.setString(26, data.get(i).getUContactDateTime());
+                System.out.println("the element have done");
             }
 
             @Override
