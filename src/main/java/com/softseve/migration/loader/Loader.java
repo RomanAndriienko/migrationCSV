@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -26,13 +25,14 @@ public class Loader {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-//    private int getNumOfOperations(int size){
-//        int operationsNeed = ;
-//
-//        if()
-//                = dataToLoad.size() / BATCH_SIZE + 1;
-//
-//    }
+    private int getNumOfOperations(List<PatientResult> data) {
+        int operationsNeed;
+        if (data.size() % BATCH_SIZE == 0) {
+            operationsNeed = data.size() / BATCH_SIZE;
+        } else
+            operationsNeed = data.size() / BATCH_SIZE + 1;
+        return operationsNeed;
+    }
 
 //    public void load(List<PatientResult> dataToLoad) {
 //        for (int i = 0; i < getNumOfOperations(dataToLoad.size()) ; i++) {
