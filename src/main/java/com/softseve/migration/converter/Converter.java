@@ -1,45 +1,42 @@
 package com.softseve.migration.converter;
 
-import com.softseve.migration.errors.FailMessage;
 import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Converter {
 
-    private final static Logger logger = LoggerFactory.getLogger(Converter.class);
-
     public List<PatientResult> convert(List<Patient> patients,
         List<PatientContact> patientContacts) {
         List<PatientResult> results = new ArrayList<>();
-        List<FailMessage> errors = new ArrayList<>();
 
-        for (Patient patient : patients) {
-            for (PatientContact contact : patientContacts) {
-                if (patient.getId().equals(contact.getId())) {
-                    results.add(_convert(patient, contact));
-                } else {
-                    //TODO
-                    logger.error(String.format("no matches by %s in line %s ", patient.getId(),
-                        patient.getPatientSrc().getLineNumber()));
-                    errors.add(new FailMessage(patient.getPatientSrc().getLineNumber(), "msg"));
+        for (PatientContact contact : patientContacts) {
+            results.add(addContactToResult(contact));
+        }
+
+        for (PatientResult result : results) {
+            for (Patient patient : patients) {
+                if (result.getId().equals(patient.getId())) {
+                    setPatientToResult(result, patient);
+                    patients.remove(patient);
                 }
             }
-
         }
+
+        for (Patient patient : patients) {
+            results.add(addPatientToResult(patient));
+        }
+
         return results;
     }
 
-    private PatientResult _convert(Patient patient, PatientContact contact) {
+    private PatientResult addContactToResult(PatientContact contact) {
         return PatientResult.builder()
-            .accessDate(patient.getAccessDate())
-            .bDate(patient.getBDate())
+            .id(contact.getId())
             .cContactDateTime(contact.getCContactDateTime())
             .cDate(contact.getCDate())
             .cntRef(contact.getCntRef())
@@ -48,24 +45,45 @@ public class Converter {
             .contactType(contact.getContactType())
             .contactTypeId(contact.getContactTypeId())
             .contactTypeIdx(contact.getContactTypeIdx())
-            .cPatientDateTime(patient.getCPatientDateTime())
             .facility(contact.getFacility())
             .firstName(contact.getFirstName())
             .lastName(contact.getLastName())
+            .pCode(contact.getPCode())
+            .sums(contact.getSums())
+            .uContactDateTime(contact.getUContactDateTime())
+            .user(contact.getUser())
+            .contactSrc(contact.getContactSrc())
+            .build();
+    }
+
+    private PatientResult addPatientToResult(Patient patient) {
+        return PatientResult.builder()
+            .accessDate(patient.getAccessDate())
+            .bDate(patient.getBDate())
+            .cPatientDateTime(patient.getCPatientDateTime())
             .id(patient.getId())
             .items(patient.getItems())
             .MPI(patient.getMPI())
             .patientTypeId(patient.getPatientTypeId())
             .patientTypeRef(patient.getPatientTypeRef())
             .patientTypeTxt(patient.getPatientTypeTxt())
-            .pCode(contact.getPCode())
             .refId(patient.getRefId())
-            .sums(contact.getSums())
-            .uContactDateTime(contact.getUContactDateTime())
             .uPatientDateTime(patient.getUPatientDateTime())
-            .user(contact.getUser())
-            .contactSrc(contact.getContactSrc())
             .patientSrc(patient.getPatientSrc())
             .build();
+    }
+
+    private void setPatientToResult(PatientResult result, Patient patient) {
+        result.setAccessDate(patient.getAccessDate());
+        result.setBDate(patient.getBDate());
+        result.setCPatientDateTime(patient.getCPatientDateTime());
+        result.setItems(patient.getItems());
+        result.setMPI(patient.getMPI());
+        result.setPatientTypeId(patient.getPatientTypeId());
+        result.setPatientTypeRef(patient.getPatientTypeRef());
+        result.setPatientTypeTxt(patient.getPatientTypeTxt());
+        result.setRefId(patient.getRefId());
+        result.setUPatientDateTime(patient.getUPatientDateTime());
+        result.setPatientSrc(patient.getPatientSrc());
     }
 }
