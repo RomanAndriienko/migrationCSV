@@ -1,6 +1,7 @@
 package com.softseve.migration.loader;
 
 import com.softseve.migration.model.PatientResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class Loader {
         return customBatchSize > 0 ? customBatchSize : BATCH_SIZE;
     }
 
-    public void saveToDB(List<PatientResult> data) {
+    public void load(List<PatientResult> data) {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
