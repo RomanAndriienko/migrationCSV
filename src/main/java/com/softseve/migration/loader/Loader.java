@@ -25,6 +25,7 @@ public class Loader {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public Loader(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
