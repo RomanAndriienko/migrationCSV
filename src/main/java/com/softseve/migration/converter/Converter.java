@@ -12,23 +12,21 @@ public class Converter {
 
     public List<PatientResult> convert(List<Patient> patients,
         List<PatientContact> patientContacts) {
+
         List<PatientResult> results = new ArrayList<>();
 
         for (PatientContact contact : patientContacts) {
             results.add(addContactToResult(contact));
         }
 
-        for (PatientResult result : results) {
-            for (Patient patient : patients) {
+        for (Patient patient : patients) {
+            for (PatientResult result : results) {
                 if (result.getId().equals(patient.getId())) {
                     setPatientToResult(result, patient);
-                    patients.remove(patient);
+                } else {
+                    results.add(addPatientToResult(patient));
                 }
             }
-        }
-
-        for (Patient patient : patients) {
-            results.add(addPatientToResult(patient));
         }
 
         return results;
