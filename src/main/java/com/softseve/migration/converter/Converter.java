@@ -14,6 +14,7 @@ public class Converter {
         List<PatientContact> patientContacts) {
 
         List<PatientResult> results = new ArrayList<>();
+        List<PatientResult> temps = new ArrayList<>();
 
         for (PatientContact contact : patientContacts) {
             results.add(addContactToResult(contact));
@@ -24,10 +25,12 @@ public class Converter {
                 if (result.getId().equals(patient.getId())) {
                     setPatientToResult(result, patient);
                 } else {
-                    results.add(addPatientToResult(patient));
+                    temps.add(addPatientToResult(patient));
                 }
             }
         }
+
+        results.addAll(temps);
 
         return results;
     }
