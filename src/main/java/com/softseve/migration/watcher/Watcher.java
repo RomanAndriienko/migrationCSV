@@ -45,8 +45,9 @@ public class Watcher {
                     }
                 }
                 key.reset();
-                if (Files.list(directoryPath).count() == 2) {
+                if (paths.size() == 2) {
                     processor.process(paths);
+                    paths = new ArrayList<>();
                 }
             }
         }
