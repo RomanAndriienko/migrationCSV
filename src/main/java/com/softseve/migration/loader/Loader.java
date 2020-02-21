@@ -13,6 +13,9 @@ import java.util.List;
 public class Loader {
 
     private final int BATCH_SIZE = 50;
+    private int customBatchSize = 0;
+
+    // TODO: check this INSERT QUERY!!!
     private final String QUERY_LOAD_TO_DB = "insert into patient_result (ID, B_DATE, REF_ID, ACCESS_DATE, ITEMS, MPI, " +
             "PATIENT_TYPE_ID, PATIENT_TYPE_TXT, PATIENT_TYPE_REF, C_PATIENT_DATETIME, U_PATIENT_DATETIME, C_DATE, " +
             "CONTACT_REF, P_CODE, FIRST_NAME, LAST_NAME, USER_, FACILITY, CNT_REF, CNT_REF_2, CONTACT_TYPE_ID, " +
@@ -24,21 +27,14 @@ public class Loader {
     public Loader(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-    private int getNumOfOperations(List<PatientResult> data) {
-        int operationsNeed;
-        if (data.size() % BATCH_SIZE == 0) {
-            operationsNeed = data.size() / BATCH_SIZE;
-        } else
-            operationsNeed = data.size() / BATCH_SIZE + 1;
-        return operationsNeed;
+    public Loader(JdbcTemplate jdbcTemplate, int customBatchSize) {
+        this.jdbcTemplate = jdbcTemplate;
+        if (customBatchSize > 0) this.customBatchSize = customBatchSize;
     }
 
-//    public void load(List<PatientResult> dataToLoad) {
-//        for (int i = 0; i < getNumOfOperations(dataToLoad.size()) ; i++) {
-//            saveToDB()
-//        }
-//    }
+    private int getCustomBatchSize() {
+        return customBatchSize > 0 ? customBatchSize : BATCH_SIZE;
+    }
 
     public void saveToDB(List<PatientResult> data) {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
@@ -74,7 +70,7 @@ public class Loader {
 
             @Override
             public int getBatchSize() {
-                return BATCH_SIZE;
+                return getCustomBatchSize();
             }
         });
     }
