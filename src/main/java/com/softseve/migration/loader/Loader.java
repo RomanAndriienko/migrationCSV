@@ -68,7 +68,6 @@ public class Loader {
                 ps.setLong(24, data.get(i).getSums());
                 ps.setString(25, data.get(i).getCContactDateTime());
                 ps.setString(26, data.get(i).getUContactDateTime());
-                System.out.println("the element have done");
             }
 
             @Override

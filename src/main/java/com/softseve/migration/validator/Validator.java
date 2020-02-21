@@ -15,7 +15,7 @@ public class Validator {
         } catch (IllegalArgumentException e) {
             logger.error(String
                 .format("Invalid value : %s in %s line in column %s", uuid, line, columnName));
-//            throw new RuntimeException("Invalid " + uuid + " " + columnName);
+            throw new RuntimeException("Invalid " + uuid + " " + columnName);
         }
         return uuid;
     }
@@ -27,7 +27,7 @@ public class Validator {
         } catch (IllegalArgumentException e) {
             logger.error(String
                 .format("Invalid value : %s in %s line in column %s", number, line, columnName));
-//            throw new RuntimeException("Invalid " + number + " " + columnName);
+            throw new RuntimeException("Invalid " + number + " " + columnName);
         }
         return number;
     }
