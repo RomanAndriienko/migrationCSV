@@ -15,6 +15,6 @@ public class AppRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Watcher watcher = new Watcher(
             new Processor(new Loader(), new CSVFileReader(), new Converter()));
-        watcher.watch("CSVs/123/12", FileType.CSV);
+        watcher.watch(args.toString(), FileType.CSV);
     }
 }

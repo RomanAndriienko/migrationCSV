@@ -38,10 +38,11 @@ public class ConverterTest {
             .patientTypeTxt("String")
             .refId("String")
             .uPatientDateTime("String")
-            .patientSrc(new Source())
+            .patientSrc(new Source("String", 1))
             .build();
 
         patientContact = PatientContact.builder()
+            .id(uuid)
             .cContactDateTime("String")
             .cDate("String")
             .cntRef(1)
@@ -57,7 +58,7 @@ public class ConverterTest {
             .sums(1)
             .uContactDateTime("String")
             .user("String")
-            .contactSrc(new Source())
+            .contactSrc(new Source("String", 1))
             .build();
     }
 
