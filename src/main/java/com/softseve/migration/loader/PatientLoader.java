@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class Loader {
+public class PatientLoader {
 
     private final int BATCH_SIZE = 50;
     private int customBatchSize = 0;
@@ -26,10 +26,10 @@ public class Loader {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public Loader(JdbcTemplate jdbcTemplate) {
+    public PatientLoader(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    public Loader(JdbcTemplate jdbcTemplate, int customBatchSize) {
+    public PatientLoader(JdbcTemplate jdbcTemplate, int customBatchSize) {
         this.jdbcTemplate = jdbcTemplate;
         if (customBatchSize > 0) this.customBatchSize = customBatchSize;
     }

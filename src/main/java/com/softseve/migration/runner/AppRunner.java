@@ -1,7 +1,8 @@
 package com.softseve.migration.runner;
 
 import com.softseve.migration.converter.Converter;
-import com.softseve.migration.loader.Loader;
+import com.softseve.migration.loader.PatientLoader;
+import com.softseve.migration.loader.SourceLoader;
 import com.softseve.migration.processor.Processor;
 import com.softseve.migration.reader.CSVFileReader;
 import com.softseve.migration.watcher.FileType;
@@ -28,7 +29,7 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Watcher watcher = new Watcher(
-                new Processor(new Loader(jdbcTemplate), new CSVFileReader(), new Converter()));
+                new Processor(new PatientLoader(jdbcTemplate), new SourceLoader(jdbcTemplate), new CSVFileReader(), new Converter()));
         System.out.println("waiting...");
         watcher.watch(pathToCsv, FileType.CSV);
     }

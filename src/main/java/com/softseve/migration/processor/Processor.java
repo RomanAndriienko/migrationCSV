@@ -1,7 +1,8 @@
 package com.softseve.migration.processor;
 
 import com.softseve.migration.converter.Converter;
-import com.softseve.migration.loader.Loader;
+import com.softseve.migration.loader.PatientLoader;
+import com.softseve.migration.loader.SourceLoader;
 import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
@@ -17,16 +18,18 @@ import org.springframework.stereotype.Service;
 @Setter
 public class Processor {
 
-    private Loader loader;
+    private PatientLoader patientLoader;
+    private SourceLoader sourceLoader;
     private Reader reader;
     private Converter converter;
     private List<Patient> patients;
     private List<PatientContact> patientContacts;
     private List<PatientResult> dataToLoad;
 
-    public Processor(Loader loader, Reader reader, Converter converter) {
+    public Processor(PatientLoader patientLoader, SourceLoader sourceLoader, Reader reader, Converter converter) {
 
-        this.loader = loader;
+        this.patientLoader = patientLoader;
+        this.sourceLoader = sourceLoader;
         this.reader = reader;
         this.converter = converter;
         patientContacts = new ArrayList<>();
@@ -40,6 +43,8 @@ public class Processor {
         patients = reader.readPatients(paths);
         patientContacts = reader.readPatientsContacts(paths);
         dataToLoad = converter.convert(patients, patientContacts);
-        loader.load(dataToLoad);
+        patientLoader.load(dataToLoad);
+        sourceLoader.loadContactInfo(dataToLoad);
+        sourceLoader.loadPatientInfo(dataToLoad);
     }
 }
