@@ -48,8 +48,8 @@ public class Loader {
                 ps.setString(2, data.get(i).getBDate());
                 ps.setString(3, data.get(i).getRefId());
                 ps.setString(4, data.get(i).getAccessDate());
-                ps.setInt(5, data.get(i).getItems());
-                ps.setInt(6, data.get(i).getMPI());
+                ps.setLong(5, data.get(i).getItems());
+                ps.setLong(6, data.get(i).getMPI());
                 ps.setString(7, data.get(i).getPatientTypeId());
                 ps.setString(8, data.get(i).getPatientTypeTxt());
                 ps.setString(9, String.valueOf(data.get(i).getPatientTypeRef()));
@@ -61,13 +61,13 @@ public class Loader {
                 ps.setString(15, data.get(i).getFirstName());
                 ps.setString(16, data.get(i).getLastName());
                 ps.setString(17, data.get(i).getUser());
-                ps.setInt(18, data.get(i).getFacility());
-                ps.setInt(19, data.get(i).getCntRef());
-                ps.setInt(20, data.get(i).getCntRef2());
+                ps.setLong(18, data.get(i).getFacility());
+                ps.setLong(19, data.get(i).getCntRef());
+                ps.setLong(20, data.get(i).getCntRef2());
                 ps.setString(21, data.get(i).getContactTypeId());
                 ps.setString(22, data.get(i).getContactType());
                 ps.setString(23, String.valueOf(data.get(i).getContactTypeIdx()));
-                ps.setInt(24, data.get(i).getSums());
+                ps.setLong(24, data.get(i).getSums());
                 ps.setString(25, data.get(i).getCContactDateTime());
                 ps.setString(26, data.get(i).getUContactDateTime());
             }
