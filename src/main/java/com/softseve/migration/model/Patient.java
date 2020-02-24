@@ -1,5 +1,6 @@
 package com.softseve.migration.model;
 
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Data;
 
@@ -17,8 +18,25 @@ public class Patient {
     private long MPI;
     private String patientTypeId;
     private String patientTypeTxt;
-    private String patientTypeRef; //
+    private String patientTypeRef;
     private String cPatientDateTime;
     private String uPatientDateTime;
     private Source patientSrc;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Patient patient = (Patient) o;
+        return Objects.equals(id, patient.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

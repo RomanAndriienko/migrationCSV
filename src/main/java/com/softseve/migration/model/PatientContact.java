@@ -1,5 +1,6 @@
 package com.softseve.migration.model;
 
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,4 +27,21 @@ public class PatientContact {
     private String cContactDateTime;
     private String uContactDateTime;
     private Source contactSrc;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PatientContact contact = (PatientContact) o;
+        return Objects.equals(id, contact.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

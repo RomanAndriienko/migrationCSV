@@ -4,35 +4,49 @@ import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Converter {
 
     public List<PatientResult> convert(List<Patient> patients,
-        List<PatientContact> patientContacts) {
+        List<PatientContact> contacts) {
 
-        List<PatientResult> results = new ArrayList<>();
-        List<PatientResult> temps = new ArrayList<>();
+        long start = System.nanoTime();
 
-        for (PatientContact contact : patientContacts) {
-            results.add(addContactToResult(contact));
-        }
+        Map<UUID, Patient> testPatient = new HashMap<>();
+        Map<UUID, PatientContact> testContact = new HashMap<>();
+        Map<UUID, PatientResult> testResult = new HashMap<>();
 
         for (Patient patient : patients) {
-            for (PatientResult result : results) {
-                if (result.getId().equals(patient.getId())) {
-                    setPatientToResult(result, patient);
-                } else {
-                    temps.add(addPatientToResult(patient));
-                }
+            testPatient.put(patient.getId(), patient);
+        }
+
+        for (PatientContact contact : contacts) {
+            testContact.put(contact.getId(), contact);
+        }
+
+        for (Map.Entry<UUID, Patient> entry : testPatient.entrySet()) {
+            if (testContact.containsKey(entry.getKey())) {
+                PatientResult result = addContactToResult(testContact.get(entry.getKey()));
+                setPatientToResult(result, entry.getValue());
+                testResult.put(result.getId(), result);
+            }
+            testResult.put(entry.getKey(), addPatientToResult(entry.getValue()));
+        }
+
+        for (Map.Entry<UUID, PatientContact> entry : testContact.entrySet()) {
+            if (!testResult.containsKey(entry.getKey())) {
+                testResult.put(entry.getKey(), addContactToResult(entry.getValue()));
             }
         }
 
-        results.addAll(temps);
-
-        return results;
+        System.out.println(System.nanoTime() - start);
+        return new ArrayList<>(testResult.values());
     }
 
     private PatientResult addContactToResult(PatientContact contact) {

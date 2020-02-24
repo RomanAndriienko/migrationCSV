@@ -1,5 +1,6 @@
 package com.softseve.migration.model;
 
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Data;
 
@@ -38,4 +39,21 @@ public class PatientResult {
     private String cPatientDateTime;
     private String uPatientDateTime;
     private Source patientSrc;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PatientResult result = (PatientResult) o;
+        return Objects.equals(id, result.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
