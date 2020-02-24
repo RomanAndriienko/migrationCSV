@@ -70,11 +70,7 @@ public class PatientLoader {
     @Transactional(rollbackFor = Exception.class)
     public void load(List<PatientResult> data) {
 
-        List<PatientResult> dataToLoad = data.stream()
-                .filter(d -> Objects.nonNull(d.getContactSrc()))
-                .collect(Collectors.toList());
-
-        getDataParts(dataToLoad, getCustomBatchSize()).forEach(batch -> {
+        getDataParts(data, getCustomBatchSize()).forEach(batch -> {
             jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
 
                 @Override
