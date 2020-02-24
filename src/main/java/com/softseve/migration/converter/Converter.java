@@ -13,37 +13,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class Converter {
 
-    public List<PatientResult> convert(List<Patient> patients,
-        List<PatientContact> contacts) {
+    public List<PatientResult> convert(Map<UUID, Patient> patients,
+        Map<UUID, PatientContact> contacts) {
 
-        Map<UUID, Patient> testPatient = new HashMap<>();
-        Map<UUID, PatientContact> testContact = new HashMap<>();
-        Map<UUID, PatientResult> testResult = new HashMap<>();
+        Map<UUID, PatientResult> results = new HashMap<>();
 
-        for (Patient patient : patients) {
-            testPatient.put(patient.getId(), patient);
-        }
-
-        for (PatientContact contact : contacts) {
-            testContact.put(contact.getId(), contact);
-        }
-
-        for (Map.Entry<UUID, Patient> entry : testPatient.entrySet()) {
-            if (testContact.containsKey(entry.getKey())) {
-                PatientResult result = addContactToResult(testContact.get(entry.getKey()));
+        for (Map.Entry<UUID, Patient> entry : patients.entrySet()) {
+            if (contacts.containsKey(entry.getKey())) {
+                PatientResult result = addContactToResult(contacts.get(entry.getKey()));
                 setPatientToResult(result, entry.getValue());
-                testResult.put(result.getId(), result);
+                results.put(result.getId(), result);
             }
-            testResult.put(entry.getKey(), addPatientToResult(entry.getValue()));
+            results.put(entry.getKey(), addPatientToResult(entry.getValue()));
         }
 
-        for (Map.Entry<UUID, PatientContact> entry : testContact.entrySet()) {
-            if (!testResult.containsKey(entry.getKey())) {
-                testResult.put(entry.getKey(), addContactToResult(entry.getValue()));
+        for (Map.Entry<UUID, PatientContact> entry : contacts.entrySet()) {
+            if (!results.containsKey(entry.getKey())) {
+                results.put(entry.getKey(), addContactToResult(entry.getValue()));
             }
         }
 
-        return new ArrayList<>(testResult.values());
+        return new ArrayList<>(results.values());
     }
 
     private PatientResult addContactToResult(PatientContact contact) {
