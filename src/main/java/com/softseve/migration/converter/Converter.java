@@ -24,10 +24,9 @@ public class Converter {
             for (PatientResult result : results) {
                 if (result.getId().equals(patient.getId())) {
                     setPatientToResult(result, patient);
-                } else {
-                    temps.add(addPatientToResult(patient));
                 }
             }
+            temps.add(addPatientToResult(patient));
         }
 
         results.addAll(temps);

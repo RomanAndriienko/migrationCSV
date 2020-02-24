@@ -1,7 +1,6 @@
 package com.softseve.migration.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
