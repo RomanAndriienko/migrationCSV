@@ -9,7 +9,6 @@ import com.softseve.migration.watcher.FileType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class CSVFileReader implements Reader {
 
     @Override
     public Map<UUID, Patient> readPatients(List<Path> paths) throws IOException {
-        Map<UUID , Patient> patients = new HashMap<>();
+        Map<UUID, Patient> patients = new HashMap<>();
         Path patientsPath = getPatientPath(paths);
         boolean hasErrors = false;
         validator.setErrorLogs(new StringBuilder());

@@ -1,10 +1,9 @@
 package com.softseve.migration.model;
 
 import java.util.Objects;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Data
 @Builder

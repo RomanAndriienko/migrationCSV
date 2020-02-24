@@ -23,13 +23,11 @@ public class AppRunner implements ApplicationRunner {
 
     private final JdbcTemplate jdbcTemplate;
 
-//     specify directory for watcher with csv files
-//     add files in runtime
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
         Watcher watcher = new Watcher(
-                new Processor(new PatientLoader(jdbcTemplate), new SourceLoader(jdbcTemplate), new CSVFileReader(), new Converter()));
+            new Processor(new PatientLoader(jdbcTemplate), new SourceLoader(jdbcTemplate),
+                new CSVFileReader(), new Converter()));
         System.out.println("waiting...");
         watcher.watch(pathToCsv, FileType.CSV);
     }

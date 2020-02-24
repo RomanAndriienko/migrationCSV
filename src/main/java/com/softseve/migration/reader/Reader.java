@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface Reader {
 
     Map<UUID, Patient> readPatients(List<Path> paths) throws IOException;
-    Map<UUID , PatientContact> readPatientsContacts(List<Path> paths) throws IOException;
+
+    Map<UUID, PatientContact> readPatientsContacts(List<Path> paths) throws IOException;
 
 }

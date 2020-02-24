@@ -4,28 +4,28 @@ import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import com.softseve.migration.model.Source;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class ConverterTest {
 
     private final UUID uuid = UUID.randomUUID();
     private Converter converter;
-    private List<Patient> patients;
-    private List<PatientContact> contacts;
+    private Map<UUID, Patient> patients;
+    private Map<UUID, PatientContact> contacts;
     private Patient patient;
     private PatientContact patientContact;
 
     @BeforeEach
     public void setUp() {
         converter = new Converter();
-        patients = new ArrayList<>();
-        contacts = new ArrayList<>();
+        patients = new HashMap<>();
+        contacts = new HashMap<>();
         patient = Patient.builder()
             .accessDate("String")
             .bDate("String")
@@ -64,11 +64,10 @@ public class ConverterTest {
 
     @Test
     public void convert() {
-        patients.add(patient);
-        contacts.add(patientContact);
+        patients.put(patient.getId(), patient);
+        contacts.put(patientContact.getId(), patientContact);
 
         List<PatientResult> results = converter.convert(patients, contacts);
-
 
         PatientResult patientResult = PatientResult.builder()
             .accessDate(patient.getAccessDate())
@@ -101,6 +100,6 @@ public class ConverterTest {
             .patientSrc(patient.getPatientSrc())
             .build();
 
-        Assertions.assertEquals(results.get(0), patientResult );
+        Assertions.assertEquals(results.get(0), patientResult);
     }
 }

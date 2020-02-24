@@ -1,9 +1,8 @@
 package com.softseve.migration.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 public class Source {
