@@ -47,7 +47,6 @@ public class Processor {
         patientContacts = reader.readPatientsContacts(paths);
         dataToLoad = converter.convert(patients, patientContacts);
         patientLoader.load(dataToLoad);
-        sourceLoader.loadContactInfo(dataToLoad);
-        sourceLoader.loadPatientInfo(dataToLoad);
+        sourceLoader.load(dataToLoad);
     }
 }
