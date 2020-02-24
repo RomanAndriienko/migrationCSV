@@ -42,7 +42,7 @@ public class Converter {
                 testResult.put(entry.getKey(), addContactToResult(entry.getValue()));
             }
         }
-        
+
         return new ArrayList<>(testResult.values());
     }
 
