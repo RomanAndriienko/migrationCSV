@@ -92,24 +92,25 @@ public class SourceLoader {
     @Transactional(rollbackFor = Exception.class)
     public void loadPatientInfo(List<PatientResult> data) {
 
-        List<PatientResult> data1 = data.stream().filter((o1 ->
-                o1.getPatientSrc() != null)).collect(Collectors.toList());
-        jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
+        List<PatientResult> dataToLoad = data.stream()
+                .filter(d -> Objects.nonNull(d.getPatientSrc()))
+                .collect(Collectors.toList());
+        getDataParts(dataToLoad, getCustomBatchSize()).forEach(batch -> {
+            jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
 
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                if (data1.get(i).getPatientSrc() != null) {
-                    ps.setString(1, data1.get(i).getPatientSrc().getFileName());
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setString(1, batch.get(i).getPatientSrc().getFileName());
                     ps.setString(2, LocalDateTime.now().toString());
-                    ps.setLong(3, data1.get(i).getPatientSrc().getLineNumber());
-                    ps.setObject(4, data1.get(i).getId());
+                    ps.setLong(3, batch.get(i).getPatientSrc().getLineNumber());
+                    ps.setObject(4, batch.get(i).getId());
                 }
-            }
 
-            @Override
-            public int getBatchSize() {
-                return data1.size();
-            }
+                @Override
+                public int getBatchSize() {
+                    return batch.size();
+                }
+            });
         });
     }
 }
