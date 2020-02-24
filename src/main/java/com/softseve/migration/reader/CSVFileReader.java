@@ -1,15 +1,14 @@
 package com.softseve.migration.reader;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
+import com.softseve.migration.manager.FileManger;
 import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.Source;
 import com.softseve.migration.validator.Validator;
+import com.softseve.migration.watcher.FileType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,12 +22,14 @@ public class CSVFileReader implements Reader {
 
 
     Validator validator = new Validator();
+    FileManger fileManger = new FileManger();
 
     @Override
     public List<Patient> readPatients(List<Path> paths) throws IOException {
         List<Patient> patients = new ArrayList<>();
         Path patientsPath = getPatientPath(paths);
         boolean hasErrors = false;
+        validator.setErrorLogs(new StringBuilder());
         try (
             java.io.Reader reader =
                 Files.newBufferedReader(patientsPath);
@@ -58,11 +59,11 @@ public class CSVFileReader implements Reader {
                                 "MPI")))
                         .patientTypeId(csvRecord.get("PATIENT_TYPE_ID"))
                         .patientTypeTxt(csvRecord.get("PATIENT_TYPE_TXT"))
-                            .patientTypeRef(validator
-                                .isValidUUID(csvRecord
-                                        .get("PATIENT_TYPE_REF"),
-                                    csvRecord.getRecordNumber(),
-                                    "PATIENT_TYPE_REF"))
+                        .patientTypeRef(validator
+                            .isValidUUID(csvRecord
+                                    .get("PATIENT_TYPE_REF"),
+                                csvRecord.getRecordNumber(),
+                                "PATIENT_TYPE_REF"))
                         .cPatientDateTime(csvRecord.get("C_DATETIME"))
                         .uPatientDateTime(csvRecord.get("U_DATETIME"))
                         .patientSrc(new Source(patientsPath
@@ -76,7 +77,10 @@ public class CSVFileReader implements Reader {
                 }
             }
         }
-        changePaths(paths, moveFile(hasErrors, patientsPath));
+        fileManger.changePaths(paths, fileManger
+            .moveFile(hasErrors, patientsPath));
+        fileManger.createLogFile(getPatientPath(paths),
+            validator.getErrorLogs(), FileType.CSV);
         return patients;
     }
 
@@ -85,6 +89,7 @@ public class CSVFileReader implements Reader {
         List<PatientContact> contacts = new ArrayList<>();
         Path contactsPath = getContactsPath(paths);
         boolean hasErrors = false;
+        validator.setErrorLogs(new StringBuilder());
         try (
             java.io.Reader reader =
                 Files.newBufferedReader(contactsPath);
@@ -142,7 +147,10 @@ public class CSVFileReader implements Reader {
                 }
             }
         }
-        changePaths(paths, moveFile(hasErrors, contactsPath));
+        fileManger.changePaths(paths, fileManger
+            .moveFile(hasErrors, contactsPath));
+        fileManger.createLogFile(getContactsPath(paths),
+            validator.getErrorLogs(), FileType.CSV);
         return contacts;
     }
 
@@ -179,43 +187,4 @@ public class CSVFileReader implements Reader {
         }
     }
 
-    private Path moveFile(boolean hasErrors, Path path) throws IOException {
-        Path errorPath = Paths.get(path.getParent().toString()
-            .concat("/ERROR/").concat(path.getFileName().toString()));
-        Path donePath = Paths.get(path.getParent().toString()
-            .concat("/DONE/").concat(path.getFileName().toString()));
-        Path logFilePath = Paths.get("errors/log.err");
-        Path logFileErrorPath = Paths.get(path.getParent().toString()
-            .concat("/ERROR/").concat(logFilePath.getFileName().toString()));
-        if (hasErrors) {
-            if (!Files.exists(errorPath.getParent())) {
-                Files.createDirectory(errorPath.getParent());
-            }
-            Files.copy(path, errorPath, REPLACE_EXISTING);
-            Files.copy(logFilePath, logFileErrorPath, REPLACE_EXISTING);
-            Files.delete(path);
-            return errorPath;
-        } else {
-            if (!Files.exists(donePath.getParent())) {
-                Files.createDirectory(donePath.getParent());
-            }
-            Files.move(path, donePath, REPLACE_EXISTING);
-            return donePath;
-        }
-    }
-
-    private void changePaths(List<Path> paths, Path newPath) {
-        List<Path> newPaths = new ArrayList<>();
-        for (Path path : paths) {
-            if (path.getFileName().equals(newPath.getFileName())) {
-                newPaths.add(newPath);
-            } else {
-                newPaths.add(path);
-            }
-        }
-        paths.remove(0);
-        paths.remove(0);
-        paths.add(newPaths.get(0));
-        paths.add(newPaths.get(1));
-    }
 }

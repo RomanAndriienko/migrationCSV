@@ -1,3 +1,6 @@
+drop table if exists patient_result;
+drop table if exists source;
+
 create table patient_result(
  ID UUID NOT NULL,
  B_DATE VARCHAR(255),
@@ -26,5 +29,14 @@ create table patient_result(
  SUMS BIGINT,
  C_CONTACT_DATE_TIME VARCHAR(255),
  U_CONTACT_DATE_TIME VARCHAR(255),
+ PRIMARY KEY (ID)
+ );
+
+ create table source (
+  ID UUID DEFAULT uuid_generate_v4 (),
+  FILE_NAME VARCHAR (255) NOT NULL,
+  DATE_TIME VARCHAR(255) NOT NULL,
+  LINE VARCHAR(255) NOT NULL,
+  CLIENT_ID UUID NOT NULL ,
  PRIMARY KEY (ID)
  );

@@ -69,7 +69,7 @@ public class PatientLoader {
                 ps.setLong(20, data.get(i).getCntRef2());
                 ps.setString(21, data.get(i).getContactTypeId());
                 ps.setString(22, data.get(i).getContactType());
-                ps.setString(23, String.valueOf(data.get(i).getContactTypeIdx()));
+                ps.setObject(23, data.get(i).getContactTypeIdx());
                 ps.setLong(24, data.get(i).getSums());
                 ps.setString(25, data.get(i).getCContactDateTime());
                 ps.setString(26, data.get(i).getUContactDateTime());
