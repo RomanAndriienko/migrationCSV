@@ -42,7 +42,7 @@ public class Loader {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, String.valueOf(data.get(i).getId()));
+                ps.setObject(1, data.get(i).getId());
                 ps.setString(2, data.get(i).getBDate());
                 ps.setString(3, data.get(i).getRefId());
                 ps.setString(4, data.get(i).getAccessDate());
@@ -64,7 +64,7 @@ public class Loader {
                 ps.setLong(20, data.get(i).getCntRef2());
                 ps.setString(21, data.get(i).getContactTypeId());
                 ps.setString(22, data.get(i).getContactType());
-                ps.setString(23, String.valueOf(data.get(i).getContactTypeIdx()));
+                ps.setObject(23, data.get(i).getContactTypeIdx());
                 ps.setLong(24, data.get(i).getSums());
                 ps.setString(25, data.get(i).getCContactDateTime());
                 ps.setString(26, data.get(i).getUContactDateTime());

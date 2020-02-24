@@ -1,1 +1,0 @@
-INSERT into source VALUES (1, 'name', 'date', 'line');

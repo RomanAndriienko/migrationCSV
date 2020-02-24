@@ -1,5 +1,6 @@
 package com.softseve.migration.config;
 
+import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,11 +11,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @RequiredArgsConstructor
 public class SpringRootConfig {
 
-    private final DataSource dataSource;
+    private final HikariDataSource hikariDataSource;
 
     @Bean
     public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource);
+        return new JdbcTemplate(hikariDataSource);
     }
 
 }
