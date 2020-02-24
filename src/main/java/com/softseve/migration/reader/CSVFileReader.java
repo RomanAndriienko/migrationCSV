@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -25,8 +27,8 @@ public class CSVFileReader implements Reader {
     FileManger fileManger = new FileManger();
 
     @Override
-    public List<Patient> readPatients(List<Path> paths) throws IOException {
-        List<Patient> patients = new ArrayList<>();
+    public Map<UUID, Patient> readPatients(List<Path> paths) throws IOException {
+        Map<UUID , Patient> patients = new HashMap<>();
         Path patientsPath = getPatientPath(paths);
         boolean hasErrors = false;
         validator.setErrorLogs(new StringBuilder());
@@ -70,7 +72,7 @@ public class CSVFileReader implements Reader {
                             .getFileName().toString(),
                             csvRecord.getRecordNumber()))
                         .build();
-                    patients.add(patient);
+                    patients.put(patient.getId(), patient);
                 } catch (RuntimeException e) {
                     hasErrors = true;
                     continue;
@@ -85,8 +87,8 @@ public class CSVFileReader implements Reader {
     }
 
     @Override
-    public List<PatientContact> readPatientsContacts(List<Path> paths) throws IOException {
-        List<PatientContact> contacts = new ArrayList<>();
+    public Map<UUID, PatientContact> readPatientsContacts(List<Path> paths) throws IOException {
+        Map<UUID, PatientContact> contacts = new HashMap<>();
         Path contactsPath = getContactsPath(paths);
         boolean hasErrors = false;
         validator.setErrorLogs(new StringBuilder());
@@ -140,7 +142,7 @@ public class CSVFileReader implements Reader {
                             .getFileName().toString(),
                             csvRecord.getRecordNumber()))
                         .build();
-                    contacts.add(contact);
+                    contacts.put(contact.getId(), contact);
                 } catch (RuntimeException e) {
                     hasErrors = true;
                     continue;

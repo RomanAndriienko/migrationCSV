@@ -34,7 +34,7 @@ public class ConverterTest {
             .items(1)
             .MPI(1)
             .patientTypeId("String")
-            .patientTypeRef(UUID.randomUUID())
+            .patientTypeRef("String")
             .patientTypeTxt("String")
             .refId("String")
             .uPatientDateTime("String")

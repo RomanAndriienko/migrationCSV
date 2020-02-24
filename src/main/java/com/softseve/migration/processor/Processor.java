@@ -10,7 +10,10 @@ import com.softseve.migration.reader.Reader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,8 @@ public class Processor {
     private SourceLoader sourceLoader;
     private Reader reader;
     private Converter converter;
-    private List<Patient> patients;
-    private List<PatientContact> patientContacts;
+    private Map<UUID, Patient> patients;
+    private Map<UUID , PatientContact> patientContacts;
     private List<PatientResult> dataToLoad;
 
     public Processor(PatientLoader patientLoader, SourceLoader sourceLoader, Reader reader, Converter converter) {
@@ -32,8 +35,8 @@ public class Processor {
         this.sourceLoader = sourceLoader;
         this.reader = reader;
         this.converter = converter;
-        patientContacts = new ArrayList<>();
-        patients = new ArrayList<>();
+        patientContacts = new HashMap<>();
+        patients = new HashMap<>();
         dataToLoad = new ArrayList<>();
     }
 

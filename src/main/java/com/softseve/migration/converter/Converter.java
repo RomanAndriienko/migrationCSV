@@ -4,34 +4,36 @@ import com.softseve.migration.model.Patient;
 import com.softseve.migration.model.PatientContact;
 import com.softseve.migration.model.PatientResult;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Converter {
 
-    public List<PatientResult> convert(List<Patient> patients,
-        List<PatientContact> patientContacts) {
+    public List<PatientResult> convert(Map<UUID, Patient> patients,
+        Map<UUID, PatientContact> contacts) {
 
-        List<PatientResult> results = new ArrayList<>();
-        List<PatientResult> temps = new ArrayList<>();
+        Map<UUID, PatientResult> results = new HashMap<>();
 
-        for (PatientContact contact : patientContacts) {
-            results.add(addContactToResult(contact));
-        }
-
-        for (Patient patient : patients) {
-            for (PatientResult result : results) {
-                if (result.getId().equals(patient.getId())) {
-                    setPatientToResult(result, patient);
-                }
+        for (Map.Entry<UUID, Patient> entry : patients.entrySet()) {
+            if (contacts.containsKey(entry.getKey())) {
+                PatientResult result = addContactToResult(contacts.get(entry.getKey()));
+                setPatientToResult(result, entry.getValue());
+                results.put(result.getId(), result);
             }
-            temps.add(addPatientToResult(patient));
+            results.put(entry.getKey(), addPatientToResult(entry.getValue()));
         }
 
-        results.addAll(temps);
+        for (Map.Entry<UUID, PatientContact> entry : contacts.entrySet()) {
+            if (!results.containsKey(entry.getKey())) {
+                results.put(entry.getKey(), addContactToResult(entry.getValue()));
+            }
+        }
 
-        return results;
+        return new ArrayList<>(results.values());
     }
 
     private PatientResult addContactToResult(PatientContact contact) {
