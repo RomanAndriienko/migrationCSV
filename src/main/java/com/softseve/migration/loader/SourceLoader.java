@@ -95,6 +95,7 @@ public class SourceLoader {
         List<PatientResult> dataToLoad = data.stream()
                 .filter(d -> Objects.nonNull(d.getPatientSrc()))
                 .collect(Collectors.toList());
+
         getDataParts(dataToLoad, getCustomBatchSize()).forEach(batch -> {
             jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
 

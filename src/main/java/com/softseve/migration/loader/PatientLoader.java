@@ -9,12 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class PatientLoader {
-    private static int numberOfattempt = 5;
-    private static int maxRetries = 10;
 
     private final int BATCH_SIZE = 50;
     private int customBatchSize = 0;
@@ -42,43 +44,74 @@ public class PatientLoader {
         return customBatchSize > 0 ? customBatchSize : BATCH_SIZE;
     }
 
+    private int getOperationNumber(List<PatientResult> data) {
+        int operationNum;
+        if (data.size() % getCustomBatchSize() == 0) {
+            operationNum = data.size() / getCustomBatchSize();
+        } else {
+            operationNum = data.size() / getCustomBatchSize() + 1;
+        }
+        return operationNum;
+    }
+
+    private List<List<PatientResult>> getDataParts(List<PatientResult> data, int batchSize) {
+        List<List<PatientResult>> patientResults = new ArrayList<>();
+
+        for (int i = 0; i < getOperationNumber(data); i++) {
+            int start = i * batchSize;
+            int end = start + batchSize;
+            if (end > data.size()) end = data.size();
+
+            patientResults.add(data.subList(start, end));
+        }
+        return patientResults;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void load(List<PatientResult> data) {
-        jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setObject(1, data.get(i).getId());
-                ps.setString(2, data.get(i).getBDate());
-                ps.setString(3, data.get(i).getRefId());
-                ps.setString(4, data.get(i).getAccessDate());
-                ps.setLong(5, data.get(i).getItems());
-                ps.setLong(6, data.get(i).getMPI());
-                ps.setString(7, data.get(i).getPatientTypeId());
-                ps.setString(8, data.get(i).getPatientTypeTxt());
-                ps.setString(9, data.get(i).getPatientTypeRef());
-                ps.setString(10, data.get(i).getCPatientDateTime());
-                ps.setString(11, data.get(i).getUPatientDateTime());
-                ps.setString(12, data.get(i).getCDate());
-                ps.setString(13, data.get(i).getContactRef());
-                ps.setString(14, data.get(i).getPCode());
-                ps.setString(15, data.get(i).getFirstName());
-                ps.setString(16, data.get(i).getLastName());
-                ps.setString(17, data.get(i).getUser());
-                ps.setLong(18, data.get(i).getFacility());
-                ps.setLong(19, data.get(i).getCntRef());
-                ps.setLong(20, data.get(i).getCntRef2());
-                ps.setString(21, data.get(i).getContactTypeId());
-                ps.setString(22, data.get(i).getContactType());
-                ps.setObject(23, data.get(i).getContactTypeIdx());
-                ps.setLong(24, data.get(i).getSums());
-                ps.setString(25, data.get(i).getCContactDateTime());
-                ps.setString(26, data.get(i).getUContactDateTime());
-            }
 
-            @Override
-            public int getBatchSize() {
-                return getCustomBatchSize();
-            }
+        List<PatientResult> dataToLoad = data.stream()
+                .filter(d -> Objects.nonNull(d.getContactSrc()))
+                .collect(Collectors.toList());
+
+        getDataParts(dataToLoad, getCustomBatchSize()).forEach(batch -> {
+            jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
+
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setObject(1, batch.get(i).getId());
+                    ps.setString(2, batch.get(i).getBDate());
+                    ps.setString(3, batch.get(i).getRefId());
+                    ps.setString(4, batch.get(i).getAccessDate());
+                    ps.setLong(5, batch.get(i).getItems());
+                    ps.setLong(6, batch.get(i).getMPI());
+                    ps.setString(7, batch.get(i).getPatientTypeId());
+                    ps.setString(8, batch.get(i).getPatientTypeTxt());
+                    ps.setString(9, batch.get(i).getPatientTypeRef());
+                    ps.setString(10, batch.get(i).getCPatientDateTime());
+                    ps.setString(11, batch.get(i).getUPatientDateTime());
+                    ps.setString(12, batch.get(i).getCDate());
+                    ps.setString(13, batch.get(i).getContactRef());
+                    ps.setString(14, batch.get(i).getPCode());
+                    ps.setString(15, batch.get(i).getFirstName());
+                    ps.setString(16, batch.get(i).getLastName());
+                    ps.setString(17, batch.get(i).getUser());
+                    ps.setLong(18, batch.get(i).getFacility());
+                    ps.setLong(19, batch.get(i).getCntRef());
+                    ps.setLong(20, batch.get(i).getCntRef2());
+                    ps.setString(21, batch.get(i).getContactTypeId());
+                    ps.setString(22, batch.get(i).getContactType());
+                    ps.setObject(23, batch.get(i).getContactTypeIdx());
+                    ps.setLong(24, batch.get(i).getSums());
+                    ps.setString(25, batch.get(i).getCContactDateTime());
+                    ps.setString(26, batch.get(i).getUContactDateTime());
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return batch.size();
+                }
+            });
         });
     }
 }
