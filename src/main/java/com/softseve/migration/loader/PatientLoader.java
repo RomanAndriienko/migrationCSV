@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,6 +13,8 @@ import java.util.List;
 
 @Service
 public class PatientLoader {
+    private static int numberOfattempt = 5;
+    private static int maxRetries = 10;
 
     private final int BATCH_SIZE = 50;
     private int customBatchSize = 0;
@@ -29,6 +32,7 @@ public class PatientLoader {
     public PatientLoader(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     public PatientLoader(JdbcTemplate jdbcTemplate, int customBatchSize) {
         this.jdbcTemplate = jdbcTemplate;
         if (customBatchSize > 0) this.customBatchSize = customBatchSize;
@@ -38,11 +42,12 @@ public class PatientLoader {
         return customBatchSize > 0 ? customBatchSize : BATCH_SIZE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void load(List<PatientResult> data) {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, String.valueOf(data.get(i).getId()));
+                ps.setObject(1, data.get(i).getId());
                 ps.setString(2, data.get(i).getBDate());
                 ps.setString(3, data.get(i).getRefId());
                 ps.setString(4, data.get(i).getAccessDate());

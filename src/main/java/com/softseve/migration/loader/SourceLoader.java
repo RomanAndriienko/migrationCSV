@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -37,6 +38,7 @@ public class SourceLoader {
         return customBatchSize > 0 ? customBatchSize : BATCH_SIZE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void loadContactInfo(List<PatientResult> data) {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
             @Override
@@ -54,6 +56,7 @@ public class SourceLoader {
         });
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void loadPatientInfo(List<PatientResult> data) {
         jdbcTemplate.batchUpdate(QUERY_LOAD_TO_DB, new BatchPreparedStatementSetter() {
             @Override
