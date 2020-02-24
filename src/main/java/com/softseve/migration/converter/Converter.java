@@ -16,8 +16,6 @@ public class Converter {
     public List<PatientResult> convert(List<Patient> patients,
         List<PatientContact> contacts) {
 
-        long start = System.nanoTime();
-
         Map<UUID, Patient> testPatient = new HashMap<>();
         Map<UUID, PatientContact> testContact = new HashMap<>();
         Map<UUID, PatientResult> testResult = new HashMap<>();
@@ -44,8 +42,7 @@ public class Converter {
                 testResult.put(entry.getKey(), addContactToResult(entry.getValue()));
             }
         }
-
-        System.out.println(System.nanoTime() - start);
+        
         return new ArrayList<>(testResult.values());
     }
 
