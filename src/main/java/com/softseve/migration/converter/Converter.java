@@ -23,8 +23,9 @@ public class Converter {
                 PatientResult result = addContactToResult(contacts.get(entry.getKey()));
                 setPatientToResult(result, entry.getValue());
                 results.put(result.getId(), result);
+            } else {
+                results.put(entry.getKey(), addPatientToResult(entry.getValue()));
             }
-            results.put(entry.getKey(), addPatientToResult(entry.getValue()));
         }
 
         for (Map.Entry<UUID, PatientContact> entry : contacts.entrySet()) {
