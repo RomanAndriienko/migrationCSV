@@ -2,7 +2,7 @@ drop table if exists patient_result;
 drop table if exists source;
 
 create table patient_result(
- ID UUID,
+ ID UUID NOT NULL,
  B_DATE VARCHAR(255),
  REF_ID VARCHAR(255),
  ACCESS_DATE VARCHAR(255),

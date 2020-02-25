@@ -22,7 +22,7 @@ public class Watcher {
     private WatchService watchService;
     private WatchKey key;
     private final Processor processor;
-    List<Path> paths;
+    private List<Path> paths;
 
     public Watcher(Processor processor) throws IOException {
         this.watchService = FileSystems.getDefault().newWatchService();
