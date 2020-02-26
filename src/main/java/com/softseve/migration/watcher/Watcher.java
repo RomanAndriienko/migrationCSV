@@ -3,7 +3,6 @@ package com.softseve.migration.watcher;
 import com.softseve.migration.processor.Processor;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
@@ -14,13 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class Watcher {
 
     private Path directoryPath;
     private WatchService watchService;
-    private WatchKey key;
     private final Processor processor;
     private List<Path> paths;
 
@@ -35,6 +32,7 @@ public class Watcher {
         IOException {
         initDirectoryWatcher(path);
         while (true) {
+            WatchKey key;
             while ((key = watchService.take()) != null) {
                 for (WatchEvent<?> event : key.pollEvents()) {
                     if (event.context().toString()

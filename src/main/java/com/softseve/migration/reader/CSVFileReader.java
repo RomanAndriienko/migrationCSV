@@ -13,17 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CSVFileReader implements Reader {
 
-
-    Validator validator = new Validator();
-    FileManger fileManger = new FileManger();
+    private final Validator validator;
+    private final FileManger fileManger;
 
     @Override
     public Map<UUID, Patient> readPatients(List<Path> paths) throws IOException {
